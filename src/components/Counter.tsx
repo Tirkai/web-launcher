@@ -1,4 +1,4 @@
-import { createResource, createSignal } from "solid-js";
+import { createResource, createSignal, onMount } from "solid-js";
 import "./Counter.css";
 
 const fetcher = async () => {
@@ -10,6 +10,11 @@ const fetcher = async () => {
 };
 
 export default function Counter() {
-  const [data] = createResource(fetcher);
+  const [data, setData] = createSignal({});
+
+  onMount(async () => {
+    const response = await fetcher();
+    setData(response);
+  });
   return <div>Data: {JSON.stringify(data())}</div>;
 }
